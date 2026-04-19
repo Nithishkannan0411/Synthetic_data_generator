@@ -1,0 +1,47 @@
+library(ggplot2)
+library(googleVis)
+library(tidyr)
+library(dplyr)
+
+# read CSV file
+dat <- read.csv("jumlah-sekolah-guru-murid-dan-ruang-kelas-menurut-jenis-sekolah-2011-2016.csv", stringsAsFactors = FALSE)
+
+# cleaning
+dat <- arrange(dat, jenis_sekolah)
+# The year variable, i separate it into from_year(tahun_dari) and to_year(tahun_ke), because 
+# i want visualize it using GoogleVis package
+dat <- separate(data = dat, col = tahun, into = c("tahun_dari", "tahun_ke"))
+
+sekolah_negeri <- dat[c(1:25),]
+sekolah_negeri$tahun_dari <- as.numeric(sekolah_negeri$tahun_dari)
+sekolah_negeri$tahun_ke <- as.numeric(sekolah_negeri$tahun_ke)
+
+sekolah_swasta <- dat[c(26:50),]
+sekolah_swasta$tahun_ke <- as.numeric(sekolah_swasta$tahun_ke)
+sekolah_swasta$tahun_dari <- as.numeric(sekolah_swasta$tahun_dari)
+
+# visualize
+motion_graph <- gvisMotionChart(sekolah_negeri,
+                                idvar = "tingkat_sekolah",
+                                timevar = "tahun_dari")
+plot(motion_graph)
+
+
+# cluster analysis
+# k-means clustering
+scale <- scale(dat[, 5:8])
+km <- kmeans(scale, 3)
+clusplot(scale, 
+	 km$cluster, 
+	 main='2D representation of the Cluster solution', 
+	 color=TRUE, 
+	 shade=TRUE, 
+	 labels=2, 
+	 lines=0)
+
+# hierarchical clustering
+d <- dist(scale)
+hc <- hclust(d)
+plot(hc)
+
+

@@ -1,0 +1,13 @@
+tahun		= year
+tingkat_sekolah	= school level : kindergarten(TK), Elementary School(SD), Junior high school
+		  (SMP), Senior High School(SMA)
+jenis_sekolah	= type of school : public school(Negeri), private school(Swasta)
+jumlah_sekolah	= number of school
+jumlah_murid	= number of student 
+jumlah_guru 	= number of teacher
+jumlah_kelas	= number of class
+
+
+
+
+
